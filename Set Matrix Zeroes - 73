@@ -1,0 +1,67 @@
+--------------------------------------------------------------------------------------------
+73. Set Matrix Zeroes - >
+    Given an m x n integer matrix matrix, if an element is 0, set its entire row and column to 0's.
+    You must do it in place.
+
+--------------------------------------------------------------------------------------------
+Example 1:
+
+Input: matrix = [[1,1,1],[1,0,1],[1,1,1]]
+Output: [[1,0,1],[0,0,0],[1,0,1]]
+--------------------------------------------------------------------------------------------
+Example 2:
+
+Input: matrix = [[0,1,2,0],[3,4,5,2],[1,3,1,5]]
+Output: [[0,0,0,0],[0,4,5,0],[0,3,1,0]]
+--------------------------------------------------------------------------------------------
+class Solution {
+public:
+    void setZeroes(vector<vector<int>>& matrix) {
+        
+        int n = matrix.size();
+        int m = matrix[0].size();
+        
+        vector<int> x , y;
+        
+        // Identify all rows and columns that need to be set to zero
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
+                if(matrix[i][j] == 0) {
+                    x.push_back(i);
+                    y.push_back(j);
+                }
+            }
+        }
+        
+        // Set the identified rows to zero
+        for(int i = 0; i < x.size(); i++) {
+            int index = x[i];
+            for(int j = 0; j < m; j++) {
+               matrix[index][j] = 0;
+            }
+        }
+        
+        // Set the identified columns to zero
+        for(int i = 0; i < y.size(); i++) {
+            int index = y[i];
+            for(int j = 0; j < n; j++) { 
+               matrix[j][index] = 0;
+            }
+        }
+    }
+};
+--------------------------------------------------------------------------------------------
+Approach - > 
+Analyze the problem: We need to identify all the rows and columns in the matrix that contain a zero. Once identified, we will set the entire row and column to zero.
+
+Find the size of rows and columns: We calculate the number of rows n and columns m from the matrix dimensions. This will help in iterating through the matrix.
+
+Create two arrays to store indices:
+
+One array x to store the row indices where a zero is found.
+Another array y to store the column indices where a zero is found.
+Store the indices: Iterate over the matrix to identify positions where zeros are present, and push the corresponding row and column indices into arrays x and y.
+
+Set the identified rows to zero: Use the indices in the x array to set the corresponding rows to zero.
+
+Set the identified columns to zero: Similarly, use the indices in the y array to set the corresponding columns to zero.
