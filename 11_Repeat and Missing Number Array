@@ -1,0 +1,58 @@
+--------------------------------------------------------------------------------------------
+Question Link -> https://www.interviewbit.com/problems/repeat-and-missing-number-array/
+--------------------------------------------------------------------------------------------
+Repeat and Missing Number Array =>
+      You are given a read only array of n integers from 1 to n.
+      Each integer appears exactly once except A which appears twice and B which is missing.
+      Return A and B.
+      Note: Your algorithm should have a linear runtime complexity. Could you implement it without using extra memory?
+      Note that in your output A should precede B.
+--------------------------------------------------------------------------------------------
+Example 1:
+
+Input: nums = [1,3,4,2,2]
+Output: 2,5
+-------------------
+Example 2:
+
+Input: nums = [3,1,3,4,2]
+Output: 3,5
+--------------------------------------------------------------------------------------------
+class Solution {
+public:
+     vector<int> Solution::repeatedNumber(const vector<int> &A)
+     {
+      long long int n = A.size();
+      
+      long long SN = (n * (n + 1))/2;
+      long long S2N = (n* (n + 1) * (2 * n + 1))/6;
+      
+      long long S = 0, S2 = 0;
+      for(int i = 0; i < n; i++)
+      {
+          S += A[i];
+          S2 += (long long)A[i] * (long long)A[i];  
+      }
+      
+      long long val1 = S - SN;
+      long long val2 = S2 - S2N;
+      
+      val2 = val2/val1;
+      
+      long long x = (val1+val2)/2;
+      long long y = x-val1;
+      
+      return {x,y};
+   }
+};
+// Time Complexity: 
+// 𝑂(n)
+// Space Complexity: 
+// 𝑂(1)
+--------------------------------------------------------------------------------------------
+Approach for Solving the Problem:
+
+1. Calculate the expected sum SN and sum of squares S2N for the first n natural numbers.
+2. Compute the actual sum S and sum of squares S2 from the array A.
+3. Use the differences val1 = S - SN and val2 = S2 - S2N 
+4. Solve for the repeated number x and the missing number y using algebra.
