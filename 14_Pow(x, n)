@@ -1,0 +1,76 @@
+--------------------------------------------------------------------------------------------
+Question Link -> https://leetcode.com/problems/powx-n/
+--------------------------------------------------------------------------------------------
+50. Pow(x, n) => 
+ Implement pow(x, n), which calculates x raised to the power n (i.e., xn).
+--------------------------------------------------------------------------------------------
+Example 1:
+
+Input: x = 2.00000, n = 10
+Output: 1024.00000
+-------------------
+Example 2:
+
+Input: x = 2.10000, n = 3
+Output: 9.26100
+--------------------------------------------------------------------------------------------
+class Solution {
+public:
+    double myPow(double x, int n) {
+        
+       // Initialize result to 1.0 as anything raised to power 0 is 1.
+       double result = 1.0;
+       
+       // We use long long for N to handle overflow cases where n is INT_MIN
+       long long N = n;
+       
+       // If n is negative, we convert N to its positive counterpart
+       if(N < 0) N = -1 * N;
+        
+       // Start the loop to perform exponentiation by squaring
+       while(N) {
+           
+           // If N is odd, multiply the current result by x and decrease N by 1
+           // This is because x^n = x * x^(n-1) when n is odd
+           if(N % 2 == 1) {
+               result *= x;
+               N = N - 1;
+           }
+           else {
+               // If N is even, square the base (x = x * x) and halve the exponent (N = N / 2)
+               // This reduces the problem size faster, as x^n = (x^2)^(n/2) when n is even
+               x *= x;
+               N = N / 2;
+           }
+       }
+       
+       // If the original n was negative, we need to take the reciprocal of the result
+       // For example, x^-n = 1 / x^n
+       if(n < 0) {
+           result = 1.0 / result;
+       }
+       
+       // Return the final computed result
+       return result;
+    }
+};
+--------------------------------------------------------------------------------------------
+/*Initial Setup:
+
+result is initialized to 1.0, which will accumulate the final result.
+N is set to n. We use long long to avoid overflow when n = INT_MIN (since the absolute value of INT_MIN is greater than INT_MAX).
+Handling Negative Exponents:
+
+If n is negative, we convert it to its positive counterpart by setting N = -N.
+Exponentiation by Squaring:
+
+We continuously divide the exponent by 2 (or subtract 1 if it's odd) while multiplying the base appropriately.
+This reduces the number of multiplications needed to calculate the power.
+Reciprocal for Negative Powers:
+
+After the loop, if the original n was negative, we take the reciprocal of the result.
+Time Complexity:
+
+The time complexity of this approach is 
+O(logn) because in each iteration, N is either halved or reduced by 1.
+*/
