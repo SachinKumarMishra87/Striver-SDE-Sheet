@@ -1,0 +1,74 @@
+--------------------------------------------------------------------------------------------
+Question Link -> https://leetcode.com/problems/majority-element/
+--------------------------------------------------------------------------------------------
+169. Majority Element => 
+ Given an array nums of size n, return the majority element.
+
+The majority element is the element that appears more than ⌊n / 2⌋ times. You may assume
+that the majority element always exists in the array.
+--------------------------------------------------------------------------------------------
+Example 1:
+
+Input: nums = [3,2,3]
+Output: 3
+-------------------
+Example 2:
+
+Input: nums = [2,2,1,1,1,2,2]
+Output: 2
+--------------------------------------------------------------------------------------------
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        
+        int n = nums.size();
+        int el = 0;
+        int cnt = 0;
+       
+        for(int i = 0; i <  n; i++)
+        {
+            if(cnt == 0)
+            {
+              cnt = 1;
+              el = nums[i];
+            }
+            else if(nums[i] == el)
+            {
+                cnt++;
+            }
+            else{
+                cnt--;
+            }
+        }
+        int cnt1 = 0;
+        for(int i = 0; i < n; i++)
+        {
+            if(nums[i] == el)
+            {
+                cnt1++;
+            }
+        }
+        if(cnt1 > n/2)
+        {
+            return el;
+        }
+        
+        return 0;
+    }
+};
+--------------------------------------------------------------------------------------------
+Boyer-Moore Voting Algorithm:
+Phase 1: Identify a candidate for the majority element. The idea is to maintain a count 
+cnt and an element el. We iterate over the list:
+
+If cnt is 0, we set the current element as the candidate (el) and increase cnt.
+If the current element is the same as the candidate (el), increase the count.
+If it is different, decrease the count.
+This way, if there is a majority element, it will remain as the candidate by the end of
+the iteration.
+
+Phase 2: After identifying the candidate in phase 1, we verify if this candidate is indeed
+the majority element by counting how many times it appears in the list (cnt1).
+
+If the candidate appears more than n/2 times, it is the majority element. Otherwise, there 
+is no majority element, and the function returns 0.
