@@ -1,0 +1,99 @@
+--------------------------------------------------------------------------------------------
+Question Link -> https://leetcode.com/problems/majority-element-ii/
+--------------------------------------------------------------------------------------------
+229. Majority Element II => 
+    Given an integer array of size n, find all elements that appear more than ⌊ n/3 ⌋ times.
+--------------------------------------------------------------------------------------------
+Example 1:
+
+Input: nums = [3,2,3]
+Output: [3]
+-------------------
+Example 2:
+
+Input: nums = [1,2]
+Output: [1,2]
+--------------------------------------------------------------------------------------------
+class Solution {
+public:
+    vector<int> majorityElement(vector<int>& arr) 
+{
+    int n = arr.size();
+    
+    // Initialize counters and candidate variables
+    int cnt1 = 0, cnt2 = 0;   // Counts for two potential majority elements
+    int el1 = INT_MIN, el2 = INT_MIN;  // Candidate majority elements
+    
+    // Step 1: Boyer-Moore Voting Algorithm to find potential candidates
+    for(int i = 0; i < n; i++)
+    {
+        if(cnt1 == 0 && el2 != arr[i]) 
+        {
+            // Set new candidate el1 if count1 is 0 and arr[i] is not el2
+            cnt1 = 1;
+            el1 = arr[i];
+        }
+        else if(cnt2 == 0 && el1 != arr[i]) 
+        {
+            // Set new candidate el2 if count2 is 0 and arr[i] is not el1
+            cnt2 = 1;
+            el2 = arr[i];
+        }
+        else if(arr[i] == el1) 
+        {
+            // Increment count1 if arr[i] matches candidate el1
+            cnt1++;
+        }
+        else if(arr[i] == el2) 
+        {
+            // Increment count2 if arr[i] matches candidate el2
+            cnt2++;
+        }
+        else 
+        {
+            // Reduce both counts when arr[i] matches neither candidate
+            cnt1--;
+            cnt2--;
+        }
+    }
+    
+    // Reset counts to verify actual frequencies of the candidates
+    cnt1 = 0, cnt2 = 0;
+    
+    // Step 2: Count occurrences of the candidates el1 and el2
+    for(int i = 0; i < n; i++)
+    {
+        if(arr[i] == el1) cnt1++;  // Count occurrences of el1
+        if(arr[i] == el2) cnt2++;  // Count occurrences of el2
+    }
+    
+    vector<int> ans;
+    int mini = ((int)n/3) + 1;  // Minimum count threshold for majority elements
+    
+    // Step 3: Check if the candidates appear more than n/3 times
+    if(cnt1 >= mini) ans.push_back(el1);  // Add el1 if it is a valid majority element
+    if(cnt2 >= mini) ans.push_back(el2);  // Add el2 if it is a valid majority element
+        
+    // Optional: Sort the result (not necessary unless required by the problem)
+    sort(ans.begin(), ans.end());
+    
+    return ans;  // Return the majority elements
+}
+};
+--------------------------------------------------------------------------------------------
+Boyer-Moore Voting Algorithm:
+Step 1 (Candidate Selection Phase):
+
+We iterate through the array while maintaining two candidate elements (el1 and el2) and their respective counts (cnt1 and cnt2).
+If one of the counts is zero and the current element is not the other candidate, we replace that candidate with the current element and reset its count to 1.
+If the current element matches one of the candidates, we increase the corresponding count.
+If the current element matches neither candidate, we decrease both counts.
+Step 2 (Verification Phase):
+
+After determining the potential candidates, we traverse the array again to count the actual occurrences of el1 and el2.
+Step 3 (Validation):
+
+We check if the occurrences of el1 and el2 exceed n/3. If so, we add them to the result vector ans.
+Time Complexity:
+Time Complexity: O(n), where n is the size of the input array, because we perform two passes through the array.
+Space Complexity: O(1), excluding the space used for the result vector ans.
